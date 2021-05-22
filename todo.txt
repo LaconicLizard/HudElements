@@ -1,0 +1,10 @@
+
+
+get icon
+add readme
+implement movable hud element
+implement "move hudelt" gui
+make "move hudelt" gui accessible (config?
+
+implement hudelt scalability
+implement hudelt parent/child relationships
