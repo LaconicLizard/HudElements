@@ -2,9 +2,8 @@
 
 get icon
 add readme
-implement movable hud element
 implement "move hudelt" gui
-make "move hudelt" gui accessible (config?
+make "move hudelt" gui accessible (config? or f3+key?)
 
 implement hudelt scalability
 implement hudelt parent/child relationships

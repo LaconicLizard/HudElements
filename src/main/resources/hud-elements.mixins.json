@@ -4,6 +4,7 @@
   "package": "lacliz.hudelements.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "InGameHud_Mixin"
   ],
   "client": [
   ],
