@@ -2,7 +2,5 @@
 
 get icon
 add readme
-config option for border color and thickness
 
 implement hudelt scalability?
-implement hudelt parent/child relationships?

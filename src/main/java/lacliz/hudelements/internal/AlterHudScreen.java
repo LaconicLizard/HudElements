@@ -1,6 +1,7 @@
 package lacliz.hudelements.internal;
 
 import lacliz.hudelements.api.HudElement;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -27,12 +28,17 @@ public class AlterHudScreen extends Screen {
     @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         super.render(matrices, mouseX, mouseY, delta);
         synchronized (_LOCK) {
-            int x, y;
+            int x1, y1, x2, y2;
             for (HudElement elt : _HUD_ELEMENTS) {
-                elt.render(matrices, delta);
-                x = elt.getX();
-                y = elt.getY();
-                Util.drawBorder(matrices, x, y, x + elt.getWidth(), y + elt.getHeight(), 1, 0xff0000ff);
+                x1 = elt.getX();
+                y1 = elt.getY();
+                x2 = x1 + elt.getWidth();
+                y2 = y1 + elt.getHeight();
+                // draw background
+                DrawableHelper.fill(matrices, x1, y1, x2, y2, elt.getAlterHudBackgroundColor());
+                elt.render(matrices, delta);  // draw widget
+                // draw border
+                Util.drawBorder(matrices, x1, y1, x2, y2, elt.getAlterHudBorderThickness(), elt.getAlterHudBorderColor());
             }
         }
     }

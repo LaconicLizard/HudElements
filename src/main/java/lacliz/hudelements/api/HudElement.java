@@ -11,6 +11,7 @@ public abstract class HudElement {
 
     private int x, y;
     private float z = 0;
+    private int alterHudBorderColor = 0xff0000ff, alterHudBorderThickness = 1, alterHudBackgroundColor = 0x400000ff;
 
     /**
      * Save all state of this HudElement (ie. its x/y position, and possibly z-value) to disk (usually a config file).
@@ -73,7 +74,6 @@ public abstract class HudElement {
         return z;
     }
 
-
     /** Sets this HudElement to display on the HUD.  Without invoking this, it will be invisible. */
     public void enable() {
         synchronized (_LOCK) {
@@ -88,6 +88,35 @@ public abstract class HudElement {
             _HUD_ELEMENTS.remove(this);
             // no need to sort on removal
         }
+    }
+
+    // --- simple getters and setters -----
+
+    /** The color of the border around this HudElement when the HUD is being altered. */
+    public int getAlterHudBorderColor() {
+        return alterHudBorderColor;
+    }
+
+    public void setAlterHudBorderColor(int alterHudBorderColor) {
+        this.alterHudBorderColor = alterHudBorderColor;
+    }
+
+    /** The thickness of the border around this HudElement when the HUD is being altered. */
+    public int getAlterHudBorderThickness() {
+        return alterHudBorderThickness;
+    }
+
+    public void setAlterHudBorderThickness(int alterHudBorderThickness) {
+        this.alterHudBorderThickness = alterHudBorderThickness;
+    }
+
+    /** The background color behind this HudElement when the HUD is being altered. */
+    public int getAlterHudBackgroundColor() {
+        return alterHudBackgroundColor;
+    }
+
+    public void setAlterHudBackgroundColor(int alterHudBackgroundColor) {
+        this.alterHudBackgroundColor = alterHudBackgroundColor;
     }
 
 }

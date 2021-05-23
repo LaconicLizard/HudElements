@@ -1,6 +1,7 @@
 package lacliz.hudelements;
 
 import lacliz.hudelements.api.ExampleHudElement;
+import lacliz.hudelements.api.HudElement;
 import lacliz.hudelements.internal.AlterHudScreen;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
@@ -18,6 +19,15 @@ public class HudElements implements ModInitializer {
                     return 0;
                 })
         );
+        // todo remove
+        HudElement a = new ExampleHudElement(),
+                b = new ExampleHudElement(),
+                c = new ExampleHudElement();
+        a.setAlterHudBackgroundColor(0x40ff0000);
+        b.setAlterHudBorderColor(0xff00ff00);
+        a.enable();
+        b.enable();
+        c.enable();
     }
 
 }
