@@ -9,7 +9,7 @@ public abstract class HudElement {
 
     private int x, y;
     private float z = 0;
-    private int alterHudBorderColor = 0xff0000ff, alterHudBorderThickness = 1, alterHudBackgroundColor = 0x400000ff;
+    private int alterHudBorderColor = 0xffffffff, alterHudBorderThickness = 1, alterHudBackgroundColor = 0;
 
     public HudElement(int x, int y) {
         this.x = x;
