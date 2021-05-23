@@ -2,7 +2,7 @@
 
 _Movable HUD components for Minecraft._
 
-This is a Fabric Mod.  Forge is not and will not be supported.
+This is a Fabric mod.  Forge is not and will not be supported.
 
 This is a library mod for Minecraft that provides an API for mods to provide user-customizable HUD components.  These components can be then moved around by clicking and dragging them in the `/alterhud` screen, or edited by right-clicking them in the same.  
 
