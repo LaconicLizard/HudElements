@@ -2,5 +2,3 @@
 
 get icon
 add readme
-
-implement hudelt scalability?

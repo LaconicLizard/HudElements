@@ -1,6 +1,6 @@
 package lacliz.hudelements.mixin;
 
-import lacliz.hudelements.internal.AlterHudScreen;
+import lacliz.hudelements.AlterHudScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;

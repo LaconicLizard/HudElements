@@ -1,8 +1,13 @@
 
 
-Non-Implemented Features:
+Omitted Features:
     - parent/child relationships amongst HUD elements; this is more the responsibility of the element itself, not
         this mod.  Furthermore, this functionality is complex enough (eg. offset from parent, alignment to parent, etc.)
         that implementing it would either i) produce a smaller, low-quality, incomplete widget system or
         ii) reproduce a large, high-quality widget system which can already be obtained with any number of other
         libraries.  To avoid unnecessary duplication of functionality, we omit this.
+    - widget scaling / resizing; this is specific to the HudElement in question, as some may or may not support
+        resizing at all, or only along one dimension, or may want to reorganize their contents according to their size,
+        etc.  Furthermore, resizing a HudElement is only one of many "edit HudElement" operations that may be available.
+        Therefore, this feature has been omitted in favor of the more general and customizable "edit()" function
+        on the HudElement class.

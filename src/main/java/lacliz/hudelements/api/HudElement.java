@@ -13,6 +13,11 @@ public abstract class HudElement {
     private float z = 0;
     private int alterHudBorderColor = 0xff0000ff, alterHudBorderThickness = 1, alterHudBackgroundColor = 0x400000ff;
 
+    public HudElement(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     /**
      * Save all state of this HudElement (ie. its x/y position, and possibly z-value) to disk (usually a config file).
      */
@@ -27,19 +32,22 @@ public abstract class HudElement {
      */
     public abstract void render(MatrixStack matrices, float tickDelta);
 
-    /**
-     * Get the width of this HudElement.
-     *
-     * @return the width of this HudElement
-     */
+    /** The width of this HudElement. */
     public abstract int getWidth();
 
-    /**
-     * Get the height of this HudElement.
-     *
-     * @return the height of this HudElement
-     */
+    /** The height of this HudElement. */
     public abstract int getHeight();
+
+    /**
+     * Begin editing this HudElement.
+     * Typical implementations will open a new Screen.
+     * When editing is complete, you should generally open a new AlterHudScreen, though this is not strictly required.
+     *
+     * @throws UnsupportedOperationException if this HudElement is not editable.
+     */
+    public void edit() {
+        throw new UnsupportedOperationException();
+    }
 
     // ----- ----- provided methods ----- -----
 
