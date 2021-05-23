@@ -67,7 +67,10 @@ public class AlterHudScreen extends Screen {
                         yOffset = mouseY - y;
                         break;
                     } else if (button == 1 && selectedElement == null) {
-                        elt.edit();
+                        try {
+                            elt.edit();
+                        } catch (UnsupportedOperationException ignored) {
+                        }
                         break;
                     }
                 }
