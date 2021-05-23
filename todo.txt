@@ -2,8 +2,7 @@
 
 get icon
 add readme
-implement "move hudelt" gui
-make "move hudelt" gui accessible (config? or f3+key?)
+config option for border color and thickness
 
-implement hudelt scalability
-implement hudelt parent/child relationships
+implement hudelt scalability?
+implement hudelt parent/child relationships?
