@@ -1,3 +1,5 @@
 
 
 get screenshot of mod in action, add it to readme
+set default background color to clear
+handle .edit() not supported error
