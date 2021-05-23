@@ -1,4 +1,4 @@
-package lacliz.hudelements;
+package laconiclizard.hudelements;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;

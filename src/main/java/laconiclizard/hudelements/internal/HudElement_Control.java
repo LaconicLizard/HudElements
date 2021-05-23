@@ -1,6 +1,6 @@
-package lacliz.hudelements.internal;
+package laconiclizard.hudelements.internal;
 
-import lacliz.hudelements.api.HudElement;
+import laconiclizard.hudelements.api.HudElement;
 
 import java.util.ArrayList;
 import java.util.List;

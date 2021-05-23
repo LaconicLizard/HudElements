@@ -1,6 +1,6 @@
-package lacliz.hudelements.api;
+package laconiclizard.hudelements.api;
 
-import lacliz.hudelements.AlterHudScreen;
+import laconiclizard.hudelements.AlterHudScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;

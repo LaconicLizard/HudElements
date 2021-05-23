@@ -1,11 +1,9 @@
-package lacliz.hudelements.api;
+package laconiclizard.hudelements.api;
 
+import laconiclizard.hudelements.internal.HudElement_Control;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.Comparator;
-
-import static lacliz.hudelements.internal.HudElement_Control._HUD_ELEMENTS;
-import static lacliz.hudelements.internal.HudElement_Control._LOCK;
 
 public abstract class HudElement {
 
@@ -69,10 +67,10 @@ public abstract class HudElement {
 
     /** Set the z-value for this HudElement. */
     public void setZ(float z) {
-        synchronized (_LOCK) {
+        synchronized (HudElement_Control._LOCK) {
             this.z = z;
-            if (_HUD_ELEMENTS.contains(this)) {
-                _HUD_ELEMENTS.sort(Comparator.comparing(HudElement::getZ));
+            if (HudElement_Control._HUD_ELEMENTS.contains(this)) {
+                HudElement_Control._HUD_ELEMENTS.sort(Comparator.comparing(HudElement::getZ));
             }
         }
     }
@@ -84,16 +82,16 @@ public abstract class HudElement {
 
     /** Sets this HudElement to display on the HUD.  Without invoking this, it will be invisible. */
     public void enable() {
-        synchronized (_LOCK) {
-            _HUD_ELEMENTS.add(this);
-            _HUD_ELEMENTS.sort(Comparator.comparing(HudElement::getZ));
+        synchronized (HudElement_Control._LOCK) {
+            HudElement_Control._HUD_ELEMENTS.add(this);
+            HudElement_Control._HUD_ELEMENTS.sort(Comparator.comparing(HudElement::getZ));
         }
     }
 
     /** Stop this HudElement from rendering in the HUD. */
     public void disable() {
-        synchronized (_LOCK) {
-            _HUD_ELEMENTS.remove(this);
+        synchronized (HudElement_Control._LOCK) {
+            HudElement_Control._HUD_ELEMENTS.remove(this);
             // no need to sort on removal
         }
     }

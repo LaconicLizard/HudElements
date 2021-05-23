@@ -1,14 +1,12 @@
-package lacliz.hudelements;
+package laconiclizard.hudelements;
 
-import lacliz.hudelements.api.HudElement;
-import lacliz.hudelements.internal.Util;
+import laconiclizard.hudelements.api.HudElement;
+import laconiclizard.hudelements.internal.Util;
+import laconiclizard.hudelements.internal.HudElement_Control;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
-
-import static lacliz.hudelements.internal.HudElement_Control._HUD_ELEMENTS;
-import static lacliz.hudelements.internal.HudElement_Control._LOCK;
 
 public class AlterHudScreen extends Screen {
 
@@ -23,7 +21,7 @@ public class AlterHudScreen extends Screen {
     private double xOffset, yOffset;
 
     public AlterHudScreen() {
-        super(new TranslatableText("title.hud-elements.screen"));
+        super(new TranslatableText("title.hudelements.screen"));
     }
 
     @Override public boolean isPauseScreen() {
@@ -32,9 +30,9 @@ public class AlterHudScreen extends Screen {
 
     @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         super.render(matrices, mouseX, mouseY, delta);
-        synchronized (_LOCK) {
+        synchronized (HudElement_Control._LOCK) {
             int x1, y1, x2, y2, t, bc;
-            for (HudElement elt : _HUD_ELEMENTS) {
+            for (HudElement elt : HudElement_Control._HUD_ELEMENTS) {
                 x1 = elt.getX();
                 y1 = elt.getY();
                 x2 = x1 + elt.getWidth();
@@ -51,13 +49,13 @@ public class AlterHudScreen extends Screen {
     }
 
     @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        synchronized (_LOCK) {
+        synchronized (HudElement_Control._LOCK) {
             HudElement elt;
             int x, y;
             // reverse order, so if we click on a "top" element it won't select the ones underneath
             // (because _HUD_ELEMENTS is ordered by z-value from bottom to top)
-            for (int i = _HUD_ELEMENTS.size() - 1; i >= 0; i -= 1) {
-                elt = _HUD_ELEMENTS.get(i);
+            for (int i = HudElement_Control._HUD_ELEMENTS.size() - 1; i >= 0; i -= 1) {
+                elt = HudElement_Control._HUD_ELEMENTS.get(i);
                 // local variables so we don't invoke getX/Y() twice and get possibly-inconsistent results
                 x = elt.getX();
                 y = elt.getY();

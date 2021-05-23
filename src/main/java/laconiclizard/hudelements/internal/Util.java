@@ -1,4 +1,4 @@
-package lacliz.hudelements.internal;
+package laconiclizard.hudelements.internal;
 
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;

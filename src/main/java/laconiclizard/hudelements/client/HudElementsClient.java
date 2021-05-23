@@ -1,4 +1,4 @@
-package lacliz.hudelements.client;
+package laconiclizard.hudelements.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;

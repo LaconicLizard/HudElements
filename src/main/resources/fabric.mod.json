@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "hud-elements",
+  "id": "hudelements",
   "version": "${version}",
   "name": "HudElements",
   "description": "",
@@ -11,10 +11,10 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "lacliz.hudelements.client.HudElementsClient"
+      "laconiclizard.hudelements.client.HudElementsClient"
     ],
     "main": [
-      "lacliz.hudelements.HudElements"
+      "laconiclizard.hudelements.HudElements"
     ]
   },
   "mixins": [
