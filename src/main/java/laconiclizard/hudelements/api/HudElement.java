@@ -10,6 +10,7 @@ public abstract class HudElement {
     private int x, y;
     private float z = 0;
     private int alterHudBorderColor = 0xffffffff, alterHudBorderThickness = 1, alterHudBackgroundColor = 0;
+    private boolean isEnabled = false;
 
     public HudElement(int x, int y) {
         this.x = x;
@@ -83,17 +84,28 @@ public abstract class HudElement {
     /** Sets this HudElement to display on the HUD.  Without invoking this, it will be invisible. */
     public void enable() {
         synchronized (HudElement_Control._LOCK) {
-            HudElement_Control._HUD_ELEMENTS.add(this);
-            HudElement_Control._HUD_ELEMENTS.sort(Comparator.comparing(HudElement::getZ));
+            if (!isEnabled) {
+                HudElement_Control._HUD_ELEMENTS.add(this);
+                HudElement_Control._HUD_ELEMENTS.sort(Comparator.comparing(HudElement::getZ));
+                isEnabled = true;
+            }
         }
     }
 
     /** Stop this HudElement from rendering in the HUD. */
     public void disable() {
         synchronized (HudElement_Control._LOCK) {
-            HudElement_Control._HUD_ELEMENTS.remove(this);
-            // no need to sort on removal
+            if (isEnabled) {
+                HudElement_Control._HUD_ELEMENTS.remove(this);
+                // no need to sort on removal
+                isEnabled = false;
+            }
         }
+    }
+
+    /** Whether this HudElement is enabled. */
+    public boolean isEnabled() {
+        return isEnabled;
     }
 
     // --- simple getters and setters -----
