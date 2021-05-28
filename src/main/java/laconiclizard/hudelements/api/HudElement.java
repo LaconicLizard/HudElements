@@ -5,7 +5,7 @@ import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.Comparator;
 
-public abstract class HudElement {
+public abstract class HudElement implements Enableable {
 
     private int x, y;
     private float z = 0;
@@ -81,8 +81,7 @@ public abstract class HudElement {
         return z;
     }
 
-    /** Sets this HudElement to display on the HUD.  Without invoking this, it will be invisible. */
-    public void enable() {
+    @Override public void enableStrict() {
         synchronized (HudElement_Control._LOCK) {
             if (!isEnabled) {
                 HudElement_Control._HUD_ELEMENTS.add(this);
@@ -92,8 +91,7 @@ public abstract class HudElement {
         }
     }
 
-    /** Stop this HudElement from rendering in the HUD. */
-    public void disable() {
+    @Override public void disableStrict() {
         synchronized (HudElement_Control._LOCK) {
             if (isEnabled) {
                 HudElement_Control._HUD_ELEMENTS.remove(this);
@@ -103,8 +101,7 @@ public abstract class HudElement {
         }
     }
 
-    /** Whether this HudElement is enabled. */
-    public boolean isEnabled() {
+    @Override public boolean isEnabled() {
         return isEnabled;
     }
 
