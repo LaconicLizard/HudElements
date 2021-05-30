@@ -3,14 +3,17 @@ package laconiclizard.hudelements.api;
 /** A generic interface for things that can be en/disabled */
 public interface Enableable {
 
-    /** Enable this, assuming that it is already disabled. */
+    /** Enable this, assuming that it is already disabled and that enableLock() has already been acquired. */
     void enableStrict();
 
-    /** Disable this, assuming that it is already disabled. */
+    /** Disable this, assuming that it is already disabled and that enableLock() has already been acquired. */
     void disableStrict();
 
-    /** Whether this is currently enabled. */
+    /** Whether this is currently enabled.  Assumes that .enableLock() has already been acquired. */
     boolean isEnabled();
+
+    /** Object used to lock all enable/disable operations. */
+    Object enableLock();
 
     /**
      * Ensure that this is enabled.
@@ -18,11 +21,13 @@ public interface Enableable {
      * @return whether the state of this object changed as a result of this call
      */
     default boolean enable() {
-        if (!isEnabled()) {
-            enableStrict();
-            return true;
+        synchronized (enableLock()) {
+            if (!isEnabled()) {
+                enableStrict();
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
     /**
@@ -31,11 +36,13 @@ public interface Enableable {
      * @return whether the state of this object changed as a result of this call
      */
     default boolean disable() {
-        if (isEnabled()) {
-            disableStrict();
-            return true;
+        synchronized (enableLock()) {
+            if (isEnabled()) {
+                disableStrict();
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
     /**
@@ -44,12 +51,14 @@ public interface Enableable {
      * @return whether this is now enabled
      */
     default boolean toggle() {
-        if (isEnabled()) {
-            disableStrict();
-            return false;
-        } else {
-            enableStrict();
-            return true;
+        synchronized (enableLock()) {
+            if (isEnabled()) {
+                disableStrict();
+                return false;
+            } else {
+                enableStrict();
+                return true;
+            }
         }
     }
 
@@ -60,15 +69,17 @@ public interface Enableable {
      * @return whether the state of this object changed as a result of this call
      */
     default boolean setEnabled(boolean enable) {
-        boolean isEnabled = isEnabled();
-        if (isEnabled && !enable) {
-            disableStrict();
-            return true;
-        } else if (!isEnabled && enable) {
-            enableStrict();
-            return true;
+        synchronized (enableLock()) {
+            boolean isEnabled = isEnabled();
+            if (isEnabled && !enable) {
+                disableStrict();
+                return true;
+            } else if (!isEnabled && enable) {
+                enableStrict();
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
 }

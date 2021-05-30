@@ -1,12 +1,15 @@
 package laconiclizard.hudelements;
 
 import laconiclizard.hudelements.api.HudElement;
-import laconiclizard.hudelements.internal.Util;
-import laconiclizard.hudelements.internal.HudElement_Control;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static laconiclizard.hudelements.HudElements.HUD_ELEMENTS;
+import static laconiclizard.hudelements.HudElements.HUD_ELEMENTS_LOCK;
 
 public class AlterHudScreen extends Screen {
 
@@ -30,47 +33,48 @@ public class AlterHudScreen extends Screen {
 
     @Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         super.render(matrices, mouseX, mouseY, delta);
-        synchronized (HudElement_Control._LOCK) {
-            int x1, y1, x2, y2, t, bc;
-            for (HudElement elt : HudElement_Control._HUD_ELEMENTS) {
-                x1 = elt.getX();
-                y1 = elt.getY();
-                x2 = x1 + elt.getWidth();
-                y2 = y1 + elt.getHeight();
-                t = elt.getAlterHudBorderThickness();
-                bc = elt.getAlterHudBorderColor();
-                // draw background
-                DrawableHelper.fill(matrices, x1, y1, x2, y2, elt.getAlterHudBackgroundColor());
-                elt.render(matrices, delta);  // draw widget
-                // draw border
-                Util.drawBorder(matrices, x1, y1, x2, y2, t, bc);
+        List<HudElement> hudElements;
+        synchronized (HUD_ELEMENTS_LOCK) {  // copy list (to avoid potential deadlock)
+            hudElements = new ArrayList<>(HUD_ELEMENTS);
+        }
+        float x1, y1, x2, y2;
+        for (HudElement helt : hudElements) {
+            synchronized (helt.lock) {
+                x1 = helt.getX();
+                y1 = helt.getY();
+                x2 = x1 + helt.getWidth();
+                y2 = y1 + helt.getHeight();
+                Util.fill(matrices.peek().getModel(), x1, y1, x2, y2, helt.alterHudBackgroundColor());
+                helt.render(matrices, delta);
+                Util.drawBorder(matrices, x1, y1, x2, y2,
+                        helt.alterHudBorderThickness(), helt.alterHudBorderColor());
             }
         }
     }
 
     @Override public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        synchronized (HudElement_Control._LOCK) {
-            HudElement elt;
-            int x, y;
-            // reverse order, so if we click on a "top" element it won't select the ones underneath
-            // (because _HUD_ELEMENTS is ordered by z-value from bottom to top)
-            for (int i = HudElement_Control._HUD_ELEMENTS.size() - 1; i >= 0; i -= 1) {
-                elt = HudElement_Control._HUD_ELEMENTS.get(i);
-                // local variables so we don't invoke getX/Y() twice and get possibly-inconsistent results
-                x = elt.getX();
-                y = elt.getY();
-                if (mouseX >= x && mouseX <= x + elt.getWidth()
-                        && mouseY >= y && mouseY <= y + elt.getHeight()) {
+        List<HudElement> hudElements;
+        synchronized (HUD_ELEMENTS_LOCK) {  // copy to avoid potential deadlock
+            hudElements = new ArrayList<>(HUD_ELEMENTS);
+        }
+        HudElement helt;
+        float x, y;
+        // reverse order, so if we click on a "top" element it won't select the ones underneath
+        // (because hudElements is ordered by z-value from bottom to top)
+        for (int i = hudElements.size() - 1; i >= 0; i -= 1) {
+            helt = hudElements.get(i);
+            synchronized (helt.lock) {
+                x = helt.getX();
+                y = helt.getY();
+                if (mouseX >= x && mouseX <= x + helt.getWidth()
+                        && mouseY >= y && mouseY <= y + helt.getHeight()) {
                     if (button == 0) {
-                        selectedElement = elt;
+                        selectedElement = helt;
                         xOffset = mouseX - x;
                         yOffset = mouseY - y;
                         break;
-                    } else if (button == 1 && selectedElement == null) {
-                        try {
-                            elt.edit();
-                        } catch (UnsupportedOperationException ignored) {
-                        }
+                    } else if (button == 1 && selectedElement == null && helt.isEditable()) {
+                        helt.edit();
                         break;
                     }
                 }
@@ -81,9 +85,11 @@ public class AlterHudScreen extends Screen {
 
     @Override public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if (button == 0) {
-            HudElement elt = selectedElement;
-            if (elt != null) {
-                elt.save();
+            HudElement helt = selectedElement;
+            if (helt != null) {
+                synchronized (helt.lock) {
+                    helt.save();
+                }
                 selectedElement = null;
             }
         }
@@ -91,10 +97,12 @@ public class AlterHudScreen extends Screen {
     }
 
     @Override public void mouseMoved(double mouseX, double mouseY) {
-        HudElement elt = selectedElement;
-        if (elt == null) return;
-        // drag element
-        elt.setPos((int) (mouseX - xOffset), (int) (mouseY - yOffset));
+        HudElement helt = selectedElement;
+        if (helt == null) return;
+        synchronized (helt.lock) {  // drag element
+            helt.setX((float) (mouseX - xOffset));
+            helt.setY((float) (mouseY - yOffset));
+        }
     }
 
 }

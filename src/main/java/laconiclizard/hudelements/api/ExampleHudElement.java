@@ -20,29 +20,29 @@ public class ExampleHudElement extends HudElement {
     private String message;
 
     public ExampleHudElement(String message) {
-        super(0, 0);
+        super();
         this.message = message;
     }
 
     @Override public void save() {
-        // normally we would save getX(), getY() and getZ() to a config file here
+        // normally we would save .message and x/y position to a config file here
         // but for this example we have omitted this
     }
 
-    private static TextRenderer getTextRenderer() {
-        return MinecraftClient.getInstance().textRenderer;
-    }
-
     @Override public void render(MatrixStack matrices, float tickDelta) {
-        getTextRenderer().draw(matrices, message, getX(), getY(), 0xffffff);
+        MinecraftClient.getInstance().textRenderer.draw(matrices, message, getX(), getY(), 0xffffff);
     }
 
     @Override public int getWidth() {
-        return getTextRenderer().getWidth(message);
+        return MinecraftClient.getInstance().textRenderer.getWidth(message);
     }
 
     @Override public int getHeight() {
-        return getTextRenderer().fontHeight;
+        return MinecraftClient.getInstance().textRenderer.fontHeight;
+    }
+
+    @Override public boolean isEditable() {
+        return true;
     }
 
     @Override public void edit() {
@@ -53,7 +53,7 @@ public class ExampleHudElement extends HudElement {
     /** Screen that has a single TextFieldWidget and a confirm button, used to edit the message of an ExampleHudElement. */
     public static class EditExampleHudElementScreen extends Screen {
 
-        public static int WIDTH = 100;
+        public static int GUI_WIDTH = 100;
 
         public ExampleHudElement elt;
 
@@ -68,17 +68,17 @@ public class ExampleHudElement extends HudElement {
             super.init();
             Window w = MinecraftClient.getInstance().getWindow();
             TextRenderer tr = MinecraftClient.getInstance().textRenderer;
-            int h = tr.fontHeight + 5;
+            int widgetHeight = tr.fontHeight + 5;
             // text field to edit message
             textFieldWidget = new TextFieldWidget(tr,
-                    (w.getScaledWidth() - WIDTH) / 2, (w.getScaledHeight() - h) / 2,
-                    WIDTH, h,
+                    (w.getScaledWidth() - GUI_WIDTH) / 2, (w.getScaledHeight() - widgetHeight) / 2,
+                    GUI_WIDTH, widgetHeight,
                     new LiteralText("Edit Message"));
             textFieldWidget.setText(elt.message);
             addChild(textFieldWidget);
             // button to confirm edits
-            addButton(new ButtonWidget((w.getScaledWidth() - WIDTH) / 2, (w.getScaledHeight() + h) / 2,
-                    WIDTH, h,
+            addButton(new ButtonWidget((w.getScaledWidth() - GUI_WIDTH) / 2, (w.getScaledHeight() + widgetHeight) / 2,
+                    GUI_WIDTH, widgetHeight,
                     new LiteralText("Confirm"),
                     buttonWidget -> {
                         // save edits
@@ -95,7 +95,8 @@ public class ExampleHudElement extends HudElement {
         }
 
         @Override public void onClose() {
-            // if screen is closed without pressing confirm, then do not save edits
+            // if screen is closed without pressing confirm, then we won't save any edits
+            // because we only set elt.message in the pressAction of the button (not here)
             MinecraftClient.getInstance().openScreen(new AlterHudScreen());
         }
 
