@@ -23,7 +23,7 @@ public class Util {
      * @param thickness thickness of border to draw around internal rectangle
      * @param color     color of border to draw
      */
-    public static void drawBorder(MatrixStack stack, float x1, float y1, float x2, float y2, int thickness, int color) {
+    public static void drawBorder(MatrixStack stack, float x1, float y1, float x2, float y2, float thickness, int color) {
         Matrix4f matrix = stack.peek().getModel();
         // left side (incl corners)
         fill(matrix, x1 - thickness, y1 - thickness, x1, y2 + thickness, color);

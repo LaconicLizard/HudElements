@@ -146,7 +146,7 @@ public abstract class HudElement implements Enableable {
     }
 
     /** The thickness of the border around this HudElement when the HUD is being altered (via the /alterhud command). */
-    public int alterHudBorderThickness() {
+    public float alterHudBorderThickness() {
         return 1;
     }
 
