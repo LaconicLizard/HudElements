@@ -9,6 +9,11 @@ import static laconiclizard.hudelements.HudElements.HUD_ELEMENTS_LOCK;
 
 public abstract class HudElement implements Enableable {
 
+    /* Fires immediately before the /alterhud screen is opened. */
+    public static final Signal<Void> PRE_ALTERHUD = new Signal<>();
+    /* Fires immediately after the /alterhud screen closes. */
+    public static final Signal<Void> POST_ALTERHUD = new Signal<>();
+
     /* Lock which is acquired whenever state is being read/altered,
      * to ensure that only fully-consistent states are read. */
     public final Object lock = new Object();
@@ -132,10 +137,6 @@ public abstract class HudElement implements Enableable {
 
     @Override public boolean isEnabled() {
         return isEnabled;
-    }
-
-    @Override public Object enableLock() {
-        return lock;
     }
 
     // ----- /alterhud properties -----

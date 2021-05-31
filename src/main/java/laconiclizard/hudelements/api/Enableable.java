@@ -12,22 +12,17 @@ public interface Enableable {
     /** Whether this is currently enabled.  Assumes that .enableLock() has already been acquired. */
     boolean isEnabled();
 
-    /** Object used to lock all enable/disable operations. */
-    Object enableLock();
-
     /**
      * Ensure that this is enabled.
      *
      * @return whether the state of this object changed as a result of this call
      */
     default boolean enable() {
-        synchronized (enableLock()) {
-            if (!isEnabled()) {
-                enableStrict();
-                return true;
-            }
-            return false;
+        if (!isEnabled()) {
+            enableStrict();
+            return true;
         }
+        return false;
     }
 
     /**
@@ -36,13 +31,11 @@ public interface Enableable {
      * @return whether the state of this object changed as a result of this call
      */
     default boolean disable() {
-        synchronized (enableLock()) {
-            if (isEnabled()) {
-                disableStrict();
-                return true;
-            }
-            return false;
+        if (isEnabled()) {
+            disableStrict();
+            return true;
         }
+        return false;
     }
 
     /**
@@ -51,14 +44,12 @@ public interface Enableable {
      * @return whether this is now enabled
      */
     default boolean toggle() {
-        synchronized (enableLock()) {
-            if (isEnabled()) {
-                disableStrict();
-                return false;
-            } else {
-                enableStrict();
-                return true;
-            }
+        if (isEnabled()) {
+            disableStrict();
+            return false;
+        } else {
+            enableStrict();
+            return true;
         }
     }
 
@@ -69,17 +60,15 @@ public interface Enableable {
      * @return whether the state of this object changed as a result of this call
      */
     default boolean setEnabled(boolean enable) {
-        synchronized (enableLock()) {
-            boolean isEnabled = isEnabled();
-            if (isEnabled && !enable) {
-                disableStrict();
-                return true;
-            } else if (!isEnabled && enable) {
-                enableStrict();
-                return true;
-            }
-            return false;
+        boolean isEnabled = isEnabled();
+        if (isEnabled && !enable) {
+            disableStrict();
+            return true;
+        } else if (!isEnabled && enable) {
+            enableStrict();
+            return true;
         }
+        return false;
     }
 
 }

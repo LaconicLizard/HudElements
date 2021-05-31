@@ -105,4 +105,9 @@ public class AlterHudScreen extends Screen {
         }
     }
 
+    @Override public void removed() {
+        super.removed();
+        HudElement.POST_ALTERHUD.fire(null);
+    }
+
 }
