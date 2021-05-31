@@ -27,6 +27,11 @@ public class AlterHudScreen extends Screen {
         super(new TranslatableText("title.hudelements.screen"));
     }
 
+    @Override protected void init() {
+        super.init();
+        HudElement.PRE_ALTERHUD.fire(null);
+    }
+
     @Override public boolean isPauseScreen() {
         return true;
     }
