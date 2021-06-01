@@ -33,11 +33,11 @@ public class ExampleHudElement extends HudElement {
         MinecraftClient.getInstance().textRenderer.draw(matrices, message, getX(), getY(), 0xffffff);
     }
 
-    @Override public int getWidth() {
+    @Override public float getWidth() {
         return MinecraftClient.getInstance().textRenderer.getWidth(message);
     }
 
-    @Override public int getHeight() {
+    @Override public float getHeight() {
         return MinecraftClient.getInstance().textRenderer.fontHeight;
     }
 

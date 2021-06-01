@@ -47,7 +47,7 @@ public abstract class HudElement implements Enableable {
      *
      * @return the width of this HudElement
      */
-    public abstract int getWidth();
+    public abstract float getWidth();
 
     /**
      * The height of this HudElement.
@@ -55,7 +55,7 @@ public abstract class HudElement implements Enableable {
      *
      * @return the height of this HudElement
      */
-    public abstract int getHeight();
+    public abstract float getHeight();
 
     /**
      * Whether this HudElement may be edited via the .edit() method.
